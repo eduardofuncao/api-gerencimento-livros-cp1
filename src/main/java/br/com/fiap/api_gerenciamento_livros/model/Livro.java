@@ -1,5 +1,6 @@
 package br.com.fiap.api_gerenciamento_livros.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Livro implements LivroInterface{
@@ -7,7 +8,7 @@ public class Livro implements LivroInterface{
     private String autor;
     private long isbn;
     private String categoria;
-    private List<Long> reservas;    
+    private List<Long> reservas = new ArrayList<Long>();    
 
     public Livro() {
 

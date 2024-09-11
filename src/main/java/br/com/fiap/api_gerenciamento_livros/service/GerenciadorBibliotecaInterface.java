@@ -1,7 +1,6 @@
 package br.com.fiap.api_gerenciamento_livros.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import br.com.fiap.api_gerenciamento_livros.model.Livro;
 
@@ -14,7 +13,9 @@ public interface GerenciadorBibliotecaInterface {
     List<Livro> criarLivros(List<Livro> livros);
     void excluirLivro(long isbn);
 
-    List<Livro> listarLivros(Optional<String> ordenacao, Optional<String> categoria);
+    List<Livro> listarLivros();
+    List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade, List<Livro> livrosFiltrados);
+    List<Livro> listarLivrosFiltradosPorCategoria(String categoria);
     boolean reservarLivro(long isbn, long userID);
     boolean cancelarReserva(long isbn, long userID);
     List<Long> listarReservas(long isbn);

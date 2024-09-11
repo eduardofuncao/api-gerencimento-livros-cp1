@@ -3,14 +3,13 @@ package br.com.fiap.api_gerenciamento_livros.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.fiap.api_gerenciamento_livros.exception.LivroNaoEncontradoException;
 import br.com.fiap.api_gerenciamento_livros.model.Livro;
 
 public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
-    private List<Livro> livros;
+    private List<Livro> livros = new ArrayList<Livro>();
 
     @Override
     public Livro getLivroPorISBN(long isbn){
@@ -34,7 +33,7 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     public void excluirLivro(long isbn) {
         livros.remove(getLivroPorISBN(isbn));
     }
-
+/*
     @Override
     public List<Livro> listarLivros(Optional<String> ordenacao, Optional<String> categoria) {
         List<Livro> livrosResultado = getLivros();
@@ -47,9 +46,7 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
 
         if(ordenacao.isPresent()) {
             if (ordenacao.toString().equals("titulo")) {
-                livrosResultado.stream()
-                .sorted(Comparator.comparing(Livro::getTitulo))
-                .collect(Collectors.toList());
+                y
             } else if (ordenacao.toString().equals("autor")) {
                 livrosResultado.stream()
                 .sorted(Comparator.comparing(Livro::getAutor))
@@ -59,6 +56,35 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
         }
         return livrosResultado;
     }
+*/
+    @Override
+    public List<Livro> listarLivros() {
+        return getLivros();
+    }
+
+    @Override
+    public List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade, List<Livro> livrosFiltrados) {
+        if (propriedade.equals("autor")) {
+            livrosFiltrados.stream()
+                .sorted(Comparator.comparing(Livro::getAutor))
+                .collect(Collectors.toList());
+        } else if (propriedade.equals("titulo")) {
+            livrosFiltrados.stream()
+                .sorted(Comparator.comparing(Livro::getTitulo))
+                .collect(Collectors.toList());
+        }  
+        return livrosFiltrados;
+    }
+    
+    @Override 
+    public List<Livro> listarLivrosFiltradosPorCategoria(String categoria) {
+        List<Livro> livrosResultado = getLivros();
+        livrosResultado.stream()
+            .filter(livro -> (livro.getCategoria().equals(categoria)))
+            .collect(Collectors.toList());
+        return livrosResultado;
+    }
+
     @Override
     public boolean reservarLivro(long isbn, long userID) {
         return getLivroPorISBN(isbn).fazReserva(userID);
