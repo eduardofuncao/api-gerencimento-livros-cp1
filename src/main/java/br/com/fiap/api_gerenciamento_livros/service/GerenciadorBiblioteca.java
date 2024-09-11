@@ -1,8 +1,10 @@
 package br.com.fiap.api_gerenciamento_livros.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import br.com.fiap.api_gerenciamento_livros.exception.LivroNaoEncontradoException;
 import br.com.fiap.api_gerenciamento_livros.model.Livro;
@@ -30,40 +32,46 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
 
     @Override
     public void excluirLivro(long isbn) {
-        int idRemocao = this.livros.indexOf(getLivroPorISBN(isbn));
-        livros.remove(idRemocao);
+        livros.remove(getLivroPorISBN(isbn));
     }
 
     @Override
     public List<Livro> listarLivros(Optional<String> ordenacao, Optional<String> categoria) {
-        List<Livro> livrosResult = getLivros();
+        List<Livro> livrosResultado = getLivros();
 
         if(categoria.isPresent()) {
-
+            livrosResultado.stream()
+            .filter(livro -> (livro.getCategoria().equals(categoria.toString())))
+            .collect(Collectors.toList());
         }
 
         if(ordenacao.isPresent()) {
-
+            if (ordenacao.toString().equals("titulo")) {
+                livrosResultado.stream()
+                .sorted(Comparator.comparing(Livro::getTitulo))
+                .collect(Collectors.toList());
+            } else if (ordenacao.toString().equals("autor")) {
+                livrosResultado.stream()
+                .sorted(Comparator.comparing(Livro::getAutor))
+                .collect(Collectors.toList());
+            }
+            
         }
-        return livrosResult;
+        return livrosResultado;
     }
-
     @Override
     public boolean reservarLivro(long isbn, long userID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reservarLivro'");
+        return getLivroPorISBN(isbn).fazReserva(userID);
     }
 
     @Override
     public boolean cancelarReserva(long isbn, long userID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cancelarReserva'");
+        return getLivroPorISBN(isbn).cancelaReserva(userID);
     }
 
     @Override
     public List<Long> listarReservas(long isbn) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarReservas'");
+        return getLivroPorISBN(isbn).getReservas();
     }
 
     public List<Livro> getLivros() {
