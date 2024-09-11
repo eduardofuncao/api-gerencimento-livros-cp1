@@ -63,26 +63,26 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     }
 
     @Override
-    public List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade, List<Livro> livrosFiltrados) {
+    public List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade) {
         if (propriedade.equals("autor")) {
-            livrosFiltrados.stream()
+            return livros.stream()
                 .sorted(Comparator.comparing(Livro::getAutor))
                 .collect(Collectors.toList());
         } else if (propriedade.equals("titulo")) {
-            livrosFiltrados.stream()
+            return livros.stream()
                 .sorted(Comparator.comparing(Livro::getTitulo))
                 .collect(Collectors.toList());
+        } else {
+            return null;
         }  
-        return livrosFiltrados;
+
     }
     
     @Override 
     public List<Livro> listarLivrosFiltradosPorCategoria(String categoria) {
-        List<Livro> livrosResultado = getLivros();
-        livrosResultado.stream()
+        return livros.stream()
             .filter(livro -> (livro.getCategoria().equals(categoria)))
             .collect(Collectors.toList());
-        return livrosResultado;
     }
 
     @Override

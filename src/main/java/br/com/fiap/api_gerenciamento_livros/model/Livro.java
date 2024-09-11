@@ -23,7 +23,7 @@ public class Livro implements LivroInterface{
     }
 
     public String getTitulo() {
-        return titulo;
+        return titulo.toLowerCase();
     }
 
     public void setTitulo(String titulo) {
@@ -31,7 +31,7 @@ public class Livro implements LivroInterface{
     }
 
     public String getAutor() {
-        return autor;
+        return autor.toLowerCase();
     }
 
     public void setAutor(String autor) {

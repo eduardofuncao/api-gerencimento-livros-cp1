@@ -25,7 +25,7 @@ public class LivroController {
     }
     
 
-    // TODO Criar map no gerenciador que coloca livros na categoria correta no momento da criação
+    /*
     @GetMapping
     public ResponseEntity<List<Livro>> listarLivrosPorCategoriaEOrdenados( 
             @RequestParam(value="ordenarPor", required = false) String ordenarPor,
@@ -45,4 +45,20 @@ public class LivroController {
 
         return ResponseEntity.ok(livrosFiltradosOrdenados);
     }
+        */
+    
+
+    // TODO Criar map no gerenciador que coloca livros na categoria correta no momento da criação
+    // TODO fazer funcionar para uso de categoria e ordernarPor simultaneamente
+    @GetMapping
+    public ResponseEntity<List<Livro>> listarPorCategoria(
+            @RequestParam(value="categoria", required=false) String categoria,
+            @RequestParam(value="ordenarPor", required=false) String ordenarPor) {
+        if (categoria != null)
+            return ResponseEntity.ok(gerenciadorBiblioteca.listarLivrosFiltradosPorCategoria(categoria));
+        if (ordenarPor != null)
+            return ResponseEntity.ok(gerenciadorBiblioteca.listarLivrosOrdenadosPorPropriedade(ordenarPor));
+        return ResponseEntity.ok(gerenciadorBiblioteca.listarLivros());
+    }
+
 }

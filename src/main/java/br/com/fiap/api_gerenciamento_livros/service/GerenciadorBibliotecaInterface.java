@@ -14,7 +14,7 @@ public interface GerenciadorBibliotecaInterface {
     void excluirLivro(long isbn);
 
     List<Livro> listarLivros();
-    List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade, List<Livro> livrosFiltrados);
+    List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade);
     List<Livro> listarLivrosFiltradosPorCategoria(String categoria);
     boolean reservarLivro(long isbn, long userID);
     boolean cancelarReserva(long isbn, long userID);
