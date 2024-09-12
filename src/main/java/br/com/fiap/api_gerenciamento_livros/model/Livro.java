@@ -75,6 +75,7 @@ public class Livro implements LivroInterface{
         return reservas.removeIf(userReserva -> (userReserva == userID));
     }
 
+    //assumindo que quando livro é entregado, ele passa automaticamente para o próximo da lista de reservas
     @Override
     public long entregaLivro() {
         // remove o primeiro usuario da fila de reservas
