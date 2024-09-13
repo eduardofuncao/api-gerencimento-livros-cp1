@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.api_gerenciamento_livros.model.LivroDTO;
-import br.com.fiap.api_gerenciamento_livros.model.User;
+import br.com.fiap.api_gerenciamento_livros.model.UserDTO;
 import br.com.fiap.api_gerenciamento_livros.service.GerenciadorBiblioteca;
 
 @RestController
@@ -74,8 +74,8 @@ public class LivroController {
     @PostMapping("/reservas/{isbn}")
     public ResponseEntity<Boolean> criarReservas(
             @PathVariable("isbn") long isbn,
-            @RequestBody User user) {
-        return ResponseEntity.status(201).body(gerenciadorBiblioteca.reservarLivro(isbn, user.getUserId()));
+            @RequestBody UserDTO userDTO) {
+        return ResponseEntity.status(201).body(gerenciadorBiblioteca.reservarLivro(isbn, userDTO.getUserId()));
     }
 
     @GetMapping("/reservas/{isbn}")
@@ -89,9 +89,7 @@ public class LivroController {
             @PathVariable("userId") long userId) {
         gerenciadorBiblioteca.cancelarReserva(isbn, userId);
         return ResponseEntity.noContent().build();
-    }
-
-        
+    } 
 
     @PatchMapping("/reservas/{isbn}/devolver")
     public ResponseEntity<Long> devolveLivro(@PathVariable("isbn") long isbn) {
