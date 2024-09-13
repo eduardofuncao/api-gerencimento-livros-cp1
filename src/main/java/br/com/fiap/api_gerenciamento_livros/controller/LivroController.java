@@ -100,6 +100,7 @@ public class LivroController {
         return ResponseEntity.noContent().build();
     } 
 
+    //TODO implementar endpoints de entrega e devolução do livro corretamente
     @PatchMapping("/reservas/{isbn}/devolver")
     public ResponseEntity<Long> devolveLivro(@PathVariable("isbn") long isbn) {
         return ResponseEntity.ok(gerenciadorBiblioteca.getLivroPorISBN(isbn).entregaLivro());
