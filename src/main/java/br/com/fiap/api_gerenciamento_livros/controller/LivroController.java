@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fiap.api_gerenciamento_livros.model.Livro;
+import br.com.fiap.api_gerenciamento_livros.model.LivroDTO;
 import br.com.fiap.api_gerenciamento_livros.model.User;
 import br.com.fiap.api_gerenciamento_livros.service.GerenciadorBiblioteca;
 
@@ -24,8 +24,8 @@ public class LivroController {
 
      
     @PostMapping("/livros")
-    public ResponseEntity<List<Livro>> criarLivros(@RequestBody List<Livro> livros) {
-        return ResponseEntity.status(201).body(gerenciadorBiblioteca.criarLivros(livros));
+    public ResponseEntity<List<LivroDTO>> criarLivros(@RequestBody List<LivroDTO> livrosDTO) {
+        return ResponseEntity.status(201).body(gerenciadorBiblioteca.criarLivros(livrosDTO));
     }
     
 
@@ -55,7 +55,7 @@ public class LivroController {
     // TODO Criar map no gerenciador que coloca livros na categoria correta no momento da criação
     // TODO fazer funcionar para uso de categoria e ordernarPor simultaneamente
     @GetMapping("/livros")
-    public ResponseEntity<List<Livro>> listarPorCategoria(
+    public ResponseEntity<List<LivroDTO>> listarPorCategoria(
             @RequestParam(value="categoria", required=false) String categoria,
             @RequestParam(value="ordenarPor", required=false) String ordenarPor) {
         if (categoria != null)
@@ -93,7 +93,7 @@ public class LivroController {
 
         
 
-    @PatchMapping("/reservas/{isbn}/devolve")
+    @PatchMapping("/reservas/{isbn}/devolver")
     public ResponseEntity<Long> devolveLivro(@PathVariable("isbn") long isbn) {
         return ResponseEntity.ok(gerenciadorBiblioteca.getLivroPorISBN(isbn).entregaLivro());
     }

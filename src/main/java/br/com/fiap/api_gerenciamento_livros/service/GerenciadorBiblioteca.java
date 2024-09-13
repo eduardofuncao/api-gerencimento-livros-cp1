@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import br.com.fiap.api_gerenciamento_livros.exception.LivroNaoEncontradoException;
 import br.com.fiap.api_gerenciamento_livros.model.Livro;
+import br.com.fiap.api_gerenciamento_livros.model.LivroDTO;
 
 public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     private List<Livro> livros = new ArrayList<Livro>();
@@ -20,11 +21,11 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     }
 
     @Override
-    public List<Livro> criarLivros(List<Livro> livrosCriados) {
-        List<Livro> livrosAdicionados = new ArrayList<Livro>();
-        for(Livro livro:livrosCriados) {
-            livrosAdicionados.add(livro);
-            this.livros.add(livro);
+    public List<LivroDTO> criarLivros(List<LivroDTO> livrosDTOCriados) {
+        List<LivroDTO> livrosAdicionados = new ArrayList<LivroDTO>();
+        for(LivroDTO livroDTO:livrosDTOCriados) {
+            livrosAdicionados.add(livroDTO);
+            this.livros.add(convertToEntity(livroDTO));
         }
         return livrosAdicionados;
     }
@@ -58,19 +59,20 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     }
 */
     @Override
-    public List<Livro> listarLivros() {
+    public List<LivroDTO> listarLivros() {
         return getLivros();
     }
 
     @Override
-    public List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade) {
+    public List<LivroDTO> listarLivrosOrdenadosPorPropriedade(String propriedade) {
+        List<LivroDTO> livrosDTO = convertoToDTOList();
         if (propriedade.equals("autor")) {
-            return livros.stream()
-                .sorted(Comparator.comparing(Livro::getAutor))
+            return livrosDTO.stream()
+                .sorted(Comparator.comparing(LivroDTO::getAutor))
                 .collect(Collectors.toList());
         } else if (propriedade.equals("titulo")) {
-            return livros.stream()
-                .sorted(Comparator.comparing(Livro::getTitulo))
+            return livrosDTO.stream()
+                .sorted(Comparator.comparing(LivroDTO::getTitulo))
                 .collect(Collectors.toList());
         } else {
             return null;
@@ -79,8 +81,9 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     }
     
     @Override 
-    public List<Livro> listarLivrosFiltradosPorCategoria(String categoria) {
-        return livros.stream()
+    public List<LivroDTO> listarLivrosFiltradosPorCategoria(String categoria) {
+        List<LivroDTO> livrosDTO = convertoToDTOList();
+        return livrosDTO.stream()
             .filter(livro -> (livro.getCategoria().equals(categoria)))
             .collect(Collectors.toList());
     }
@@ -100,12 +103,42 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
         return getLivroPorISBN(isbn).getReservas();
     }
 
-    public List<Livro> getLivros() {
-        return livros;
+    public List<LivroDTO> getLivros() {
+        List<LivroDTO> livrosDTO = new ArrayList<>();
+        for(Livro livro:livros) {
+            livrosDTO.add(convertToDTO(livro));
+        }
+        return livrosDTO;
     }
 
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
+    }
+
+    private LivroDTO convertToDTO(Livro livro) {
+        LivroDTO livroDTO = new LivroDTO();
+        livroDTO.setIsbn(livro.getIsbn());
+        livroDTO.setTitulo(livro.getTitulo());
+        livroDTO.setAutor(livro.getAutor());
+        livroDTO.setCategoria(livro.getCategoria());
+        livroDTO.setReservas(livro.getReservas());
+        return livroDTO;
+    }
+
+    private List<LivroDTO> convertoToDTOList() {
+        return livros.stream() 
+            .map(livro -> convertToDTO(livro))
+            .collect(Collectors.toList());
+    }
+
+
+    private Livro convertToEntity(LivroDTO livroDTO) {
+        Livro livro = new Livro();
+        livro.setIsbn(livroDTO.getIsbn());
+        livro.setTitulo(livroDTO.getTitulo());
+        livro.setAutor(livroDTO.getAutor());
+        livro.setCategoria(livroDTO.getCategoria());
+        return livro;
     }
     
 }

@@ -3,6 +3,7 @@ package br.com.fiap.api_gerenciamento_livros.service;
 import java.util.List;
 
 import br.com.fiap.api_gerenciamento_livros.model.Livro;
+import br.com.fiap.api_gerenciamento_livros.model.LivroDTO;
 
 public interface GerenciadorBibliotecaInterface {
     //Classe responsável por toda a lógica de negócios da aplicação. - 
@@ -10,12 +11,12 @@ public interface GerenciadorBibliotecaInterface {
     //listar a fila de espera e cancelar reservas.
 
     Livro getLivroPorISBN(long isbn);
-    List<Livro> criarLivros(List<Livro> livros);
+    List<LivroDTO> criarLivros(List<LivroDTO> livros);
     void excluirLivro(long isbn);
 
-    List<Livro> listarLivros();
-    List<Livro> listarLivrosOrdenadosPorPropriedade(String propriedade);
-    List<Livro> listarLivrosFiltradosPorCategoria(String categoria);
+    List<LivroDTO> listarLivros();
+    List<LivroDTO> listarLivrosOrdenadosPorPropriedade(String propriedade);
+    List<LivroDTO> listarLivrosFiltradosPorCategoria(String categoria);
     boolean reservarLivro(long isbn, long userID);
     boolean cancelarReserva(long isbn, long userID);
     List<Long> listarReservas(long isbn);
