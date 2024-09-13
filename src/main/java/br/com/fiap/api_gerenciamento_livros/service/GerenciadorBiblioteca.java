@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.fiap.api_gerenciamento_livros.exception.LivroJaExisteException;
+import br.com.fiap.api_gerenciamento_livros.exception.LivroJaReservadoException;
 import br.com.fiap.api_gerenciamento_livros.exception.LivroNaoEncontradoException;
 import br.com.fiap.api_gerenciamento_livros.model.Livro;
 import br.com.fiap.api_gerenciamento_livros.model.LivroDTO;
@@ -20,14 +22,23 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
         return livroEncontrado;
     }
 
+    private boolean hasElementoEmComum(List<Livro> livros, List<LivroDTO> livrosParaAdicionar) {
+        return livros.stream()
+                .anyMatch(livro -> livrosParaAdicionar.stream().anyMatch(livroParaAdicionar -> livro.getIsbn() ==livroParaAdicionar.getIsbn()));
+    }
+
     @Override
     public List<LivroDTO> criarLivros(List<LivroDTO> livrosDTOCriados) {
-        List<LivroDTO> livrosAdicionados = new ArrayList<LivroDTO>();
-        for(LivroDTO livroDTO:livrosDTOCriados) {
-            livrosAdicionados.add(livroDTO);
-            this.livros.add(convertToEntity(livroDTO));
+        if(hasElementoEmComum(livros, livrosDTOCriados))
+            throw new LivroJaExisteException("Ao menos um dos livros na lista já existe! Nenhum livro será adicionado");
+        else{
+            List<LivroDTO> livrosAdicionados = new ArrayList<LivroDTO>();
+            for(LivroDTO livroDTO:livrosDTOCriados) {
+                livrosAdicionados.add(livroDTO);
+                this.livros.add(convertToEntity(livroDTO));
+            }
+            return livrosAdicionados;
         }
-        return livrosAdicionados;
     }
 
     @Override
@@ -65,7 +76,7 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
 
     @Override
     public List<LivroDTO> listarLivrosOrdenadosPorPropriedade(String propriedade) {
-        List<LivroDTO> livrosDTO = convertoToDTOList();
+        List<LivroDTO> livrosDTO = getLivros();
         if (propriedade.equals("autor")) {
             return livrosDTO.stream()
                 .sorted(Comparator.comparing(LivroDTO::getAutor))
@@ -82,7 +93,7 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     
     @Override 
     public List<LivroDTO> listarLivrosFiltradosPorCategoria(String categoria) {
-        List<LivroDTO> livrosDTO = convertoToDTOList();
+        List<LivroDTO> livrosDTO = getLivros();
         return livrosDTO.stream()
             .filter(livro -> (livro.getCategoria().equals(categoria)))
             .collect(Collectors.toList());
@@ -90,6 +101,11 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
 
     @Override
     public boolean reservarLivro(long isbn, long userID) {
+        Livro livroParaReservar = getLivroPorISBN(isbn); 
+        if(livroParaReservar.isReservado()){
+            livroParaReservar.fazReserva(userID);
+            throw new LivroJaReservadoException("o livro com isbn: " + isbn + " já foi reservado. O usuário " + userID + " será adicionado à a fila de reservas.");
+        }
         return getLivroPorISBN(isbn).fazReserva(userID);
     }
 
@@ -103,12 +119,9 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
         return getLivroPorISBN(isbn).getReservas();
     }
 
+
     public List<LivroDTO> getLivros() {
-        List<LivroDTO> livrosDTO = new ArrayList<>();
-        for(Livro livro:livros) {
-            livrosDTO.add(convertToDTO(livro));
-        }
-        return livrosDTO;
+        return convertoToDTOList();
     }
 
     public void setLivros(List<Livro> livros) {

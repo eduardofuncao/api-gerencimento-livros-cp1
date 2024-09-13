@@ -2,6 +2,7 @@ package br.com.fiap.api_gerenciamento_livros.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.api_gerenciamento_livros.model.LivroDTO;
 import br.com.fiap.api_gerenciamento_livros.model.UserDTO;
@@ -58,6 +60,11 @@ public class LivroController {
     public ResponseEntity<List<LivroDTO>> listarPorCategoria(
             @RequestParam(value="categoria", required=false) String categoria,
             @RequestParam(value="ordenarPor", required=false) String ordenarPor) {
+        
+        if(gerenciadorBiblioteca.getLivros().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum livro adicionado na biblioteca");
+        }
+
         if (categoria != null)
             return ResponseEntity.ok(gerenciadorBiblioteca.listarLivrosFiltradosPorCategoria(categoria));
         if (ordenarPor != null)
@@ -75,9 +82,11 @@ public class LivroController {
     public ResponseEntity<Boolean> criarReservas(
             @PathVariable("isbn") long isbn,
             @RequestBody UserDTO userDTO) {
+        
         return ResponseEntity.status(201).body(gerenciadorBiblioteca.reservarLivro(isbn, userDTO.getUserId()));
     }
 
+    // não permitir reserva de um usuároi que já está na fila
     @GetMapping("/reservas/{isbn}")
     public ResponseEntity<List<Long>> listarReservas(@PathVariable("isbn") long isbn) {
         return ResponseEntity.ok(gerenciadorBiblioteca.listarReservas(isbn));
