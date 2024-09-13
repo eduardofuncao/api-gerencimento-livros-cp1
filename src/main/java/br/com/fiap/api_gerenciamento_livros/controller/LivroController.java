@@ -86,7 +86,7 @@ public class LivroController {
         return ResponseEntity.status(201).body(gerenciadorBiblioteca.reservarLivro(isbn, userDTO.getUserId()));
     }
 
-    // não permitir reserva de um usuároi que já está na fila
+    // TODO não permitir reserva de um usuároi que já está na fila
     @GetMapping("/reservas/{isbn}")
     public ResponseEntity<List<Long>> listarReservas(@PathVariable("isbn") long isbn) {
         return ResponseEntity.ok(gerenciadorBiblioteca.listarReservas(isbn));
