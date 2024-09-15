@@ -1,7 +1,7 @@
 # api-gerencimento-livros-cp1
 > Eduardo Felipe Nunes Função  
 > RM553362  
-> Link Github: https://github.com/eduardofuncao/api-gerencimento-livros-cp1  
+> Link Github: [https://github.com/eduardofuncao/api-gerencimento-livros-cp1](https://github.com/eduardofuncao/api-gerencimento-livros-cp1)  
 
 ## Projeto
 API REST para o gerenciamento de livros em uma biblioteca, incluido funcionalidade de fila de reservas para cada livro.
