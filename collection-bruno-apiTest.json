@@ -1,0 +1,230 @@
+{
+  "name": "api-gerenciamento-livros-cp1",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "delete livros",
+      "seq": 5,
+      "request": {
+        "url": "{{base_url}}/livros/123123",
+        "method": "DELETE",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "delete reserva",
+      "seq": 8,
+      "request": {
+        "url": "{{base_url}}/reservas/123123/102225",
+        "method": "DELETE",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get livros ordenar",
+      "seq": 4,
+      "request": {
+        "url": "{{base_url}}/livros?ordenarPor=titulo",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "ordenarPor",
+            "value": "titulo",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get livros por categoria",
+      "seq": 3,
+      "request": {
+        "url": "{{base_url}}/livros?categoria=acao",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "categoria",
+            "value": "acao",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get livros",
+      "seq": 2,
+      "request": {
+        "url": "{{base_url}}/livros",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get reservas",
+      "seq": 7,
+      "request": {
+        "url": "{{base_url}}/reservas/123123",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "post livros",
+      "seq": 1,
+      "request": {
+        "url": "{{base_url}}/livros",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "[\n    {\n    \"isbn\": 123156,\n    \"titulo\": \"Beckman\",\n    \"autor\": \"Gustavo Lima\",\n    \"categoria\": \"acao\"\n  },\n  {\n    \"isbn\": 123123,\n    \"titulo\": \"As aventuras de pi\",\n    \"autor\": \"zenon\",\n    \"categoria\": \"acao\"\n  },\n  {\n    \"isbn\": 123534,\n    \"titulo\": \"zatura\",\n    \"autor\": \"apoca\",\n    \"categoria\": \"classico\"\n  }\n]",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "post reservas",
+      "seq": 6,
+      "request": {
+        "url": "{{base_url}}/reservas/123123",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"userId\": \"102225\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    }
+  ],
+  "activeEnvironmentUid": "5qUnU5qwIZ7I9ivKB1Kgp",
+  "environments": [
+    {
+      "variables": [
+        {
+          "name": "base_url",
+          "value": "http://localhost:8080/api/v1",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        }
+      ],
+      "name": "base"
+    }
+  ],
+  "brunoConfig": {
+    "version": "1",
+    "name": "api-gerenciamento-livros-cp1",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}
