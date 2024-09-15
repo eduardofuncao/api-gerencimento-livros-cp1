@@ -16,13 +16,13 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(LivroJaExisteException.class)
     public ResponseEntity<Map<String, String>> LivroJaExiste(LivroJaExisteException e) {
-        Map<String, String> response = Map.of("status", "409", "message", e.getMessage());
-        return ResponseEntity.status(409).body(response);
+        Map<String, String> response = Map.of("status", "400", "message", e.getMessage());
+        return ResponseEntity.status(400).body(response);
     }   
 
     @ExceptionHandler(LivroJaReservadoException.class)
-    public ResponseEntity<Map<String, String>> LivroJaReservasd(LivroJaReservadoException e) {
-        Map<String, String> response = Map.of("status", "200", "message", e.getMessage());
-        return ResponseEntity.status(200).body(response);
+    public ResponseEntity<Map<String, String>> LivroJaReservado(LivroJaReservadoException e) {
+        Map<String, String> response = Map.of("status", "409", "message", e.getMessage());
+        return ResponseEntity.status(409).body(response);
     }   
 }

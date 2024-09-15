@@ -4,7 +4,7 @@
 > Link Github: https://github.com/eduardofuncao/api-gerencimento-livros-cp1  
 
 ## Projeto
-API REST para o gerenciamento de livros em uma biblioteca, incluido funcionalidade de lista de reservas para cada livro.
+API REST para o gerenciamento de livros em uma biblioteca, incluido funcionalidade de fila de reservas para cada livro.
 
 ## Considerações para a entrega
 1. É considerado que a biblioteca pode ter somente um livro para cada isbn;

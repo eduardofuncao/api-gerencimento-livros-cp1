@@ -43,32 +43,12 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
 
     @Override
     public void excluirLivro(long isbn) {
+        if(getLivroPorISBN(isbn).isReservado()) {
+            throw new LivroJaReservadoException("O livro com isbn " + isbn + " está reservado e não pode ser excluído!");
+        }
         livros.remove(getLivroPorISBN(isbn));
     }
-/*
-    @Override
-    public List<Livro> listarLivros(Optional<String> ordenacao, Optional<String> categoria) {
-        List<Livro> livrosResultado = getLivros();
 
-        if(categoria.isPresent()) {
-            livrosResultado.stream()
-            .filter(livro -> (livro.getCategoria().equals(categoria.toString())))
-            .collect(Collectors.toList());
-        }
-
-        if(ordenacao.isPresent()) {
-            if (ordenacao.toString().equals("titulo")) {
-                y
-            } else if (ordenacao.toString().equals("autor")) {
-                livrosResultado.stream()
-                .sorted(Comparator.comparing(Livro::getAutor))
-                .collect(Collectors.toList());
-            }
-            
-        }
-        return livrosResultado;
-    }
-*/
     @Override
     public List<LivroDTO> listarLivros() {
         return getLivros();
