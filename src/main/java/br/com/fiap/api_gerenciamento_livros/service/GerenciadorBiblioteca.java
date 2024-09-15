@@ -99,9 +99,17 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
             .collect(Collectors.toList());
     }
 
+    private boolean hasIsbnAdicionado(long userID, long isbn) {
+        List<Long> reservas = getLivroPorISBN(isbn).getReservas();
+        return reservas.stream().anyMatch(reserva -> reserva == userID);
+    }
+
     @Override
     public boolean reservarLivro(long isbn, long userID) {
         Livro livroParaReservar = getLivroPorISBN(isbn); 
+        if(hasIsbnAdicionado(userID, isbn)) {
+            throw new LivroJaReservadoException("O livro com isbn " + isbn + " já foi reservado por esse usuário. O usuário não será adicionado à fila");
+        }
         if(livroParaReservar.isReservado()){
             livroParaReservar.fazReserva(userID);
             throw new LivroJaReservadoException("o livro com isbn: " + isbn + " já foi reservado. O usuário " + userID + " será adicionado à a fila de reservas.");
@@ -127,7 +135,6 @@ public class GerenciadorBiblioteca implements GerenciadorBibliotecaInterface {
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
     }
-
     private LivroDTO convertToDTO(Livro livro) {
         LivroDTO livroDTO = new LivroDTO();
         livroDTO.setIsbn(livro.getIsbn());

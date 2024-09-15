@@ -54,7 +54,6 @@ public class LivroController {
         */
     
 
-    // TODO Criar map no gerenciador que coloca livros na categoria correta no momento da criação
     // TODO fazer funcionar para uso de categoria e ordernarPor simultaneamente
     @GetMapping("/livros")
     public ResponseEntity<List<LivroDTO>> listarPorCategoria(
@@ -86,7 +85,6 @@ public class LivroController {
         return ResponseEntity.status(201).body(gerenciadorBiblioteca.reservarLivro(isbn, userDTO.getUserId()));
     }
 
-    // TODO não permitir reserva de um usuároi que já está na fila
     @GetMapping("/reservas/{isbn}")
     public ResponseEntity<List<Long>> listarReservas(@PathVariable("isbn") long isbn) {
         return ResponseEntity.ok(gerenciadorBiblioteca.listarReservas(isbn));
